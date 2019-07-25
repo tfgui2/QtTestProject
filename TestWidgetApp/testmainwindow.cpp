@@ -37,3 +37,18 @@ void TestMainWindow::setFileName(QString filename)
     m_filename = filename;
     this->setWindowTitle("TestMainWindow " + m_filename );
 }
+
+void TestMainWindow::on_actionSave_triggered()
+{
+    QString filename = QFileDialog::getSaveFileName( this, tr("Save file"), m_filename, tr("Text files (*.txt)"));
+    QFile file(filename);
+    if (!file.open(QFile::WriteOnly | QFile::Text)) {
+        qDebug() << "fail : open file " << filename;
+        return;
+    }
+
+    QTextStream out(&file);
+    out << ui->textEdit->toPlainText();
+
+    qDebug() << "save end";
+}
